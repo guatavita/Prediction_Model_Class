@@ -897,6 +897,7 @@ def return_psma_model(add_version=True):
         Ensure_Image_Proportions(image_rows=512, image_cols=512, image_keys=('image',),
                                  post_process_keys=('image', 'prediction')),
         Clip_Images_By_Extension(input_keys=('image',), annotation_keys=('annotation',),
+                                 post_process_keys=('prediction',),
                                  inf_extension=0, sup_extension=180, use_spacing=True,
                                  spacing_key='spacing')
     ])
