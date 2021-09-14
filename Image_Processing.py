@@ -18,7 +18,7 @@ from Bilinear_Dsc import BilinearUpsampling
 
 from Image_Processors_Utils.Image_Processor_Utils import ProcessPrediction, Postprocess_Pancreas, Normalize_Images, \
     Threshold_Images, DilateBinary, Focus_on_CT, CombinePredictions, CreateUpperVagina, CreateExternal, \
-    Per_Image_MinMax_Normalization, ZNorm_By_Annotation, Box_Images, Duplicate_Prediction
+    Per_Image_MinMax_Normalization, ZNorm_By_Annotation, Box_Images, Duplicate_Prediction, Clip_Images_By_Extension
 
 import SimpleITK as sitk
 
@@ -135,21 +135,21 @@ def return_liver_pb3D_model(add_version=True):
     morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (24, 256, 256)
     liver_model = PredictWindowSliding(image_key='image',
-                                          model_path=os.path.join(model_load_path,
-                                                                  'Liver_3D',
-                                                                  'BasicUNet3D_Trial_12.hdf5'),
-                                          model_template=BasicUnet3D(input_tensor=None,
-                                                                     input_shape=required_size + (1,),
-                                                                     classes=2, classifier_activation="softmax",
-                                                                     activation="leakyrelu",
-                                                                     normalization="group", nb_blocks=3,
-                                                                     nb_layers=4, dropout='standard',
-                                                                     filters=32, dropout_rate=0.1,
-                                                                     skip_type='concat',
-                                                                     bottleneck='standard').get_net(),
-                                          nb_label=2, required_size=required_size, gaussiance_map=True,
-                                          sigma_scale=0.250
-                                          )
+                                       model_path=os.path.join(model_load_path,
+                                                               'Liver_3D',
+                                                               'BasicUNet3D_Trial_12.hdf5'),
+                                       model_template=BasicUnet3D(input_tensor=None,
+                                                                  input_shape=required_size + (1,),
+                                                                  classes=2, classifier_activation="softmax",
+                                                                  activation="leakyrelu",
+                                                                  normalization="group", nb_blocks=3,
+                                                                  nb_layers=4, dropout='standard',
+                                                                  filters=32, dropout_rate=0.1,
+                                                                  skip_type='concat',
+                                                                  bottleneck='standard').get_net(),
+                                       nb_label=2, required_size=required_size, gaussiance_map=True,
+                                       sigma_scale=0.250
+                                       )
     paths = [
         os.path.join(shared_drive_path, 'Liver_3D_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Liver_3D_Auto_Contour', 'Input_3'),
@@ -890,7 +890,6 @@ def return_psma_model(add_version=True):
         os.path.join(raystation_research_path, 'PSMA_Auto_Contour', 'Input_3')
     ]
     # TODO get spacing and clip by 60*3mm dist
-    # see Clip_Images_By_Extension
     psma_model.set_paths(paths)
     psma_model.set_image_processors([
         DeepCopyKey(from_keys=('annotation',), to_keys=('og_annotation',)),
@@ -898,6 +897,9 @@ def return_psma_model(add_version=True):
         ExpandDimensions(axis=-1, image_keys=('image',)),
         Ensure_Image_Proportions(image_rows=512, image_cols=512, image_keys=('image',),
                                  post_process_keys=('image', 'prediction')),
+        Clip_Images_By_Extension(input_keys=('image',), annotation_keys=('annotation',),
+                                 inf_extension=0, sup_extension=120, use_spacing=True,
+                                 spacing_handle_key='primary_handle')
     ])
     psma_model.set_prediction_processors([
         ProcessPrediction(prediction_keys=('prediction',),
@@ -1071,6 +1073,9 @@ class ModelBuilderFromTemplate(BaseModelBuilder):
         self.model_template = model_template
 
     def build_model(self, graph=None, session=None, model_name='modelname'):
+        # model.load_weights should be run only once per model per run
+        # if model.load_weights is run multiple times per model
+        # the prediction may be perturbed and inconsistent
         if self.model_template:
             self.model = self.model_template
             if os.path.isfile(self.model_path):
