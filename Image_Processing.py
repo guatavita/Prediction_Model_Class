@@ -889,7 +889,6 @@ def return_psma_model(add_version=True):
         os.path.join(raystation_clinical_path, 'PSMA_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'PSMA_Auto_Contour', 'Input_3')
     ]
-    # TODO get spacing and clip by 60*3mm dist
     psma_model.set_paths(paths)
     psma_model.set_image_processors([
         DeepCopyKey(from_keys=('annotation',), to_keys=('og_annotation',)),
@@ -898,8 +897,8 @@ def return_psma_model(add_version=True):
         Ensure_Image_Proportions(image_rows=512, image_cols=512, image_keys=('image',),
                                  post_process_keys=('image', 'prediction')),
         Clip_Images_By_Extension(input_keys=('image',), annotation_keys=('annotation',),
-                                 inf_extension=0, sup_extension=120, use_spacing=True,
-                                 spacing_handle_key='primary_handle')
+                                 inf_extension=0, sup_extension=180, use_spacing=True,
+                                 spacing_key='spacing')
     ])
     psma_model.set_prediction_processors([
         ProcessPrediction(prediction_keys=('prediction',),
