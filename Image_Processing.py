@@ -850,9 +850,9 @@ def return_psma_pb3D_model(add_version=True):
                             mask_values=tuple([0 for i in range(1, 5)])),
         ProcessPrediction(prediction_keys=('prediction',),
                           threshold={"1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
-                          connectivity={"1": False, "2": False, "3": False, "4": False},
-                          extract_main_comp={"1": False, "2": False, "3": False, "4": False},
-                          dist={}, max_comp={}, min_vol={}, thread_count=4),
+                          connectivity={"1": True, "2": True, "3": False, "4": False},
+                          extract_main_comp={"1": False, "2": False, "3": True, "4": True},
+                          dist={"3": 50, "4": 50}, max_comp={"3": 3, "4": 3}, min_vol={"3": 3000, "4": 3000}, thread_count=4),
     ])
 
     if add_version:
@@ -904,9 +904,9 @@ def return_psma_model(add_version=True):
     psma_model.set_prediction_processors([
         ProcessPrediction(prediction_keys=('prediction',),
                           threshold={"1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
-                          connectivity={"1": False, "2": False, "3": False, "4": False},
-                          extract_main_comp={"1": False, "2": False, "3": False, "4": False},
-                          dist={}, max_comp={}, min_vol={}, thread_count=4),
+                          connectivity={"1": True, "2": True, "3": False, "4": False},
+                          extract_main_comp={"1": False, "2": False, "3": True, "4": True},
+                          dist={"3": 50, "4": 50}, max_comp={"3": 3, "4": 3}, min_vol={"3": 3000, "4": 3000}, thread_count=4),
     ])
 
     if add_version:
