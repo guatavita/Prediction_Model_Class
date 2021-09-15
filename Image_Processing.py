@@ -158,12 +158,9 @@ def return_liver_pb3D_model(add_version=True):
     ]
     liver_model.set_paths(paths)
     liver_model.set_image_processors([
-        # CreateExternal(image_key='image', output_key='external', threshold_value=-250.0, mask_value=1),
-        # DeepCopyKey(from_keys=('external',), to_keys=('og_external',)),
-        # Threshold_Images(image_keys=('image',), lower_bounds=(-100,), upper_bounds=(300,), divides=(False,)),
-        CreateExternal(image_key='image', output_key='external', threshold_value=-1250.0, mask_value=1),
+        CreateExternal(image_key='image', output_key='external', threshold_value=-250.0, mask_value=1),
         DeepCopyKey(from_keys=('external',), to_keys=('og_external',)),
-        Threshold_Images(image_keys=('image',), lower_bounds=(-1100,), upper_bounds=(-700,), divides=(False,)),
+        Threshold_Images(image_keys=('image',), lower_bounds=(-100,), upper_bounds=(300,), divides=(False,)),
         Per_Image_MinMax_Normalization(image_keys=('image',), threshold_value=1.0),
         AddSpacing(spacing_handle_key='primary_handle'),
         Resampler(resample_keys=('image', 'external'),
