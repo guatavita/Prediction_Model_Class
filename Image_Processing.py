@@ -205,7 +205,7 @@ def return_liver_pb3Df_model(add_version=True):
     liver_model = PredictWindowSliding(image_key='image',
                                        model_path=os.path.join(model_load_path,
                                                                'Liver_3Df',
-                                                               'BasicUNet3D_Trial_16_flip_DA.hdf5'),
+                                                               'BasicUNet3D_Trial_20_flip_DA_temp.hdf5'),
                                        model_template=BasicUnet3D(input_tensor=None,
                                                                   input_shape=required_size + (1,),
                                                                   classes=2, classifier_activation="softmax",
