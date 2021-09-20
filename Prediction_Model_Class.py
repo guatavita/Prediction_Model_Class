@@ -161,7 +161,6 @@ def run_model():
 
                             fid = open(post_processing_status, 'w+')
                             fid.close()
-                            time_flag = time.time()
                             print('Post Processing')
                             time_flag = time.time()
                             input_features = model_runner.post_process(input_features)
