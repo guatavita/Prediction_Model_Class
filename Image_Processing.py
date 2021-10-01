@@ -89,8 +89,8 @@ def return_paths():
         # raystation_research_path = os.path.abspath(
         #     os.path.join(desktop_path, 'Raystation_LDrive', 'Research', 'Auto_Contour_Sites'))
         morfeus_path = r'/workspace/Morfeus'
-        raystation_clinical_path = r'/workspace/RayStation/Clinical'
-        raystation_research_path = r'/workspace/RayStation/Research'
+        raystation_clinical_path = r'/workspace/Raystation/Clinical'
+        raystation_research_path = r'/workspace/Raystation/Research'
     model_load_path = os.path.join('.', 'Models')
     if not os.path.exists(model_load_path):
         model_load_path = os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Models')
