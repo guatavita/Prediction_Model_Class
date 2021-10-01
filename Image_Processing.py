@@ -76,25 +76,28 @@ def return_paths():
     try:
         os.listdir('\\\\mymdafiles\\di_data1\\')
         morfeus_path = '\\\\mymdafiles\\di_data1\\Morfeus\\'
-        shared_drive_path = '\\\\mymdafiles\\ro-ADMIN\\SHARED\\Radiation physics\\BMAnderson\\Auto_Contour_Sites\\'
+        # shared_drive_path = '\\\\mymdafiles\\ro-ADMIN\\SHARED\\Radiation physics\\BMAnderson\\Auto_Contour_Sites\\'
         raystation_clinical_path = '\\\\mymdafiles\\ou-radonc\\Raystation\\Clinical\\Auto_Contour_Sites\\'
         raystation_research_path = '\\\\mymdafiles\\ou-radonc\\Raystation\\Research\\Auto_Contour_Sites\\'
     except:
         desktop_path = find_base_dir()
-        morfeus_path = os.path.join(desktop_path, 'Morfeus')
-        shared_drive_path = os.path.abspath(os.path.join(desktop_path, 'Shared_Drive', 'Auto_Contour_Sites'))
-        raystation_clinical_path = os.path.abspath(
-            os.path.join(desktop_path, 'Raystation_LDrive', 'Clinical', 'Auto_Contour_Sites'))
-        raystation_research_path = os.path.abspath(
-            os.path.join(desktop_path, 'Raystation_LDrive', 'Research', 'Auto_Contour_Sites'))
+        # morfeus_path = os.path.join(desktop_path, 'Morfeus')
+        # shared_drive_path = os.path.abspath(os.path.join(desktop_path, 'Shared_Drive', 'Auto_Contour_Sites'))
+        # raystation_clinical_path = os.path.abspath(
+        #     os.path.join(desktop_path, 'Raystation_LDrive', 'Clinical', 'Auto_Contour_Sites'))
+        # raystation_research_path = os.path.abspath(
+        #     os.path.join(desktop_path, 'Raystation_LDrive', 'Research', 'Auto_Contour_Sites'))
+        morfeus_path = r'/Morfeus'
+        raystation_clinical_path = r'/RayStation/Clinical'
+        raystation_research_path = r'/RayStation/Research'
     model_load_path = os.path.join('.', 'Models')
     if not os.path.exists(model_load_path):
         model_load_path = os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Models')
-    return morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path
+    return morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path
 
 
 def return_liver_model():
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     liver_model = BaseModelBuilder(image_key='image',
                                    model_path=os.path.join(model_load_path,
                                                            'Liver',
@@ -109,7 +112,6 @@ def return_liver_model():
     paths = [
         r'H:\AutoModels\Liver\Input_4',
         os.path.join(morfeus_path, 'BMAnderson', 'Test', 'Input_4'),
-        os.path.join(shared_drive_path, 'Liver_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Liver_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Liver_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'Liver_Auto_Contour', 'Input_3')
@@ -132,7 +134,7 @@ def return_liver_model():
 
 
 def return_liver_pb3D_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (24, 256, 256)
     liver_model = PredictWindowSliding(image_key='image',
                                        model_path=os.path.join(model_load_path,
@@ -151,7 +153,6 @@ def return_liver_pb3D_model(add_version=True):
                                        sigma_scale=0.250
                                        )
     paths = [
-        os.path.join(shared_drive_path, 'Liver_3D_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Liver_3D_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Liver_3D_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'Liver_3D_Auto_Contour', 'Input_3')
@@ -200,7 +201,7 @@ def return_liver_pb3D_model(add_version=True):
 
 
 def return_liver_pb3Df_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (24, 256, 256)
     liver_model = PredictWindowSliding(image_key='image',
                                        model_path=os.path.join(model_load_path,
@@ -219,7 +220,6 @@ def return_liver_pb3Df_model(add_version=True):
                                        sigma_scale=0.250
                                        )
     paths = [
-        os.path.join(shared_drive_path, 'Liver_3Df_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Liver_3Df_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Liver_3Df_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'Liver_3Df_Auto_Contour', 'Input_3')
@@ -268,14 +268,13 @@ def return_liver_pb3Df_model(add_version=True):
 
 
 def return_lung_model():
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     lung_model = BaseModelBuilder(image_key='image',
                                   model_path=os.path.join(model_load_path, 'Lungs', 'Covid_Four_Model_50'),
                                   Bilinear_model=BilinearUpsampling, loss=None, loss_weights=None)
     lung_model.set_dicom_reader(TemplateDicomReader(roi_names=['Ground Glass_BMA_Program_2', 'Lung_BMA_Program_2']))
     lung_model.set_paths([
         # r'H:\AutoModels\Lung\Input_4',
-        os.path.join(shared_drive_path, 'Lungs_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Lungs', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Lungs_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'Lungs_Auto_Contour', 'Input_3'),
@@ -300,7 +299,7 @@ def return_lung_model():
 
 
 def return_liver_lobe_model():
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     liver_lobe_model = PredictLobes(image_key='image', loss=partial(weighted_categorical_crossentropy),
                                     loss_weights=[0.14, 10, 7.6, 5.2, 4.5, 3.8, 5.1, 4.4, 2.7],
                                     model_path=os.path.join(model_load_path, 'Liver_Lobes', 'Model_397'),
@@ -314,7 +313,6 @@ def return_liver_lobe_model():
                                                                     for i in range(1, 5)] +
                                                                    ['Liver_Segment_5-8_BMAProgram3']))
     liver_lobe_model.set_paths([
-        # r'H:\AutoModels\Lobes\Input_4',
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Liver_Segments_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Liver_Segments_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'Liver_Segments_Auto_Contour', 'Input_3'),
@@ -353,7 +351,7 @@ def return_liver_lobe_model():
 
 
 def return_liver_disease_model():
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     liver_disease = PredictDiseaseAblation(image_key='combined',
                                            model_path=os.path.join(model_load_path,
                                                                    'Liver_Disease_Ablation',
@@ -411,10 +409,10 @@ def return_liver_disease_model():
 
 
 def return_parotid_model():
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     partotid_model = {'model_path': os.path.join(model_load_path, 'Parotid', 'whole_model'),
                       'roi_names': ['Parotid_L_BMA_Program_4', 'Parotid_R_BMA_Program_4'],
-                      'dicom_paths': [  # os.path.join(shared_drive_path,'Liver_Auto_Contour','Input_3')
+                      'dicom_paths': [
                           os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Parotid_Auto_Contour', 'Input_3'),
                           os.path.join(raystation_clinical_path, 'Parotid_Auto_Contour', 'Input_3'),
                           os.path.join(raystation_research_path, 'Parotid_Auto_Contour', 'Input_3')
@@ -437,7 +435,7 @@ def return_parotid_model():
 
 
 def return_pancreas_model():
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     pancreas_model = ModelBuilderFromTemplate(image_key='image',
                                               model_path=os.path.join(model_load_path, 'Pancreas',
                                                                       '2D_DLv3_pancreas_ID2.hdf5'),
@@ -448,7 +446,6 @@ def return_pancreas_model():
                                                                            normalization='batch', activation='relu',
                                                                            weights=None).Deeplabv3())
     paths = [
-        os.path.join(shared_drive_path, 'Pancreas_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Pancreas_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Pancreas_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'Pancreas_Auto_Contour', 'Input_3')
@@ -472,7 +469,7 @@ def return_pancreas_model():
 def return_cyst_model():
     # TODO Add connectivity to MaskOneBasedOnOther to keep Cyst that is outside Pancreas
 
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     pancreas_cyst = PredictCyst(image_key='combined', model_path=os.path.join(model_load_path, 'Cyst',
                                                                               'HybridDLv3_model_Trial_62.hdf5'),
                                 model_template=deeplabv3plus(nb_blocks=9, nb_layers=2,
@@ -488,7 +485,6 @@ def return_cyst_model():
                                                                                   'HybridDLv3_model_Trial_62.hdf5'),
                                                              ).HybridDeeplabv3())
     paths = [
-        os.path.join(shared_drive_path, 'Cyst_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Cyst_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Cyst_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'Cyst_Auto_Contour', 'Input_3')
@@ -536,7 +532,7 @@ def return_cyst_model():
 
 
 def return_lacc_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     lacc_model = ModelBuilderFromTemplate(image_key='image',
                                           model_path=os.path.join(model_load_path,
                                                                   'LACC',
@@ -548,7 +544,6 @@ def return_lacc_model(add_version=True):
                                                                        normalization='batch', activation='relu',
                                                                        weights=None).Deeplabv3())
     paths = [
-        os.path.join(shared_drive_path, 'LACC_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'LACC_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'LACC_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'LACC_Auto_Contour', 'Input_3')
@@ -588,7 +583,7 @@ def return_lacc_model(add_version=True):
 
 
 def return_lacc_pb3D_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (48, 192, 192)
     lacc_model = PredictWindowSliding(image_key='image',
                                       model_path=os.path.join(model_load_path,
@@ -604,7 +599,6 @@ def return_lacc_pb3D_model(add_version=True):
                                       nb_label=13, required_size=required_size
                                       )
     paths = [
-        os.path.join(shared_drive_path, 'LACC_3D_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'LACC_3D_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'LACC_3D_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'LACC_3D_Auto_Contour', 'Input_3')
@@ -666,7 +660,7 @@ def return_lacc_pb3D_model(add_version=True):
 
 
 def return_ctvn_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     ctvn_model = ModelBuilderFromTemplate(image_key='image',
                                           model_path=os.path.join(model_load_path,
                                                                   'CTVN',
@@ -678,7 +672,6 @@ def return_ctvn_model(add_version=True):
                                                                        normalization='batch', activation='relu',
                                                                        weights=None).Deeplabv3())
     paths = [
-        os.path.join(shared_drive_path, 'CTVN_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'CTVN_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'CTVN_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'CTVN_Auto_Contour', 'Input_3')
@@ -714,7 +707,7 @@ def return_ctvn_model(add_version=True):
 
 
 def return_duodenum_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (48, 192, 192)
     duodenum_model = PredictWindowSliding(image_key='image',
                                           model_path=os.path.join(model_load_path,
@@ -732,7 +725,6 @@ def return_duodenum_model(add_version=True):
                                           nb_label=2, required_size=required_size
                                           )
     paths = [
-        os.path.join(shared_drive_path, 'Duodenum_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Duodenum_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Duodenum_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'Duodenum_Auto_Contour', 'Input_3')
@@ -783,7 +775,7 @@ def return_duodenum_model(add_version=True):
 
 
 def return_liver_ablation_3d_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (32, 64, 64)
     ablation_3d_model = PredictWindowSliding(image_key='image', model_path=os.path.join(model_load_path,
                                                                                         'Liver_Ablation_3D',
@@ -800,7 +792,6 @@ def return_liver_ablation_3d_model(add_version=True):
                                              nb_label=2, required_size=required_size, sw_overlap=0.5, sw_batch_size=8,
                                              )
     paths = [
-        os.path.join(shared_drive_path, 'Liver_Ablation_3D_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Liver_Ablation_3D_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Liver_Ablation_3D_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'Liver_Ablation_3D_Auto_Contour', 'Input_3')
@@ -866,7 +857,7 @@ def return_liver_ablation_3d_model(add_version=True):
 
 
 def return_psma_pb3D_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (48, 192, 192)
     psma_model = PredictWindowSliding(image_key='image',
                                       model_path=os.path.join(model_load_path,
@@ -883,7 +874,6 @@ def return_psma_pb3D_model(add_version=True):
                                       nb_label=5, required_size=required_size, sw_overlap=0.50, gaussiance_map=True,
                                       )
     paths = [
-        os.path.join(shared_drive_path, 'PSMA_3D_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'PSMA_3D_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'PSMA_3D_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'PSMA_3D_Auto_Contour', 'Input_3')
@@ -940,7 +930,7 @@ def return_psma_pb3D_model(add_version=True):
 
 
 def return_psma_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     psma_model = ModelBuilderFromTemplate(image_key='image',
                                           model_path=os.path.join(model_load_path,
                                                                   'PSMA',
@@ -952,7 +942,6 @@ def return_psma_model(add_version=True):
                                                                        normalization='batch', activation='relu',
                                                                        weights=None).Deeplabv3())
     paths = [
-        os.path.join(shared_drive_path, 'PSMA_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'PSMA_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'PSMA_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'PSMA_Auto_Contour', 'Input_3')
@@ -993,7 +982,7 @@ def return_psma_model(add_version=True):
 
 
 def return_femheads_model(add_version=True):
-    morfeus_path, model_load_path, shared_drive_path, raystation_clinical_path, raystation_research_path = return_paths()
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     femheads_model = ModelBuilderFromTemplate(image_key='image',
                                               model_path=os.path.join(model_load_path,
                                                                       'FemHeads',
@@ -1005,7 +994,6 @@ def return_femheads_model(add_version=True):
                                                                            normalization='batch', activation='relu',
                                                                            weights=None).Deeplabv3())
     paths = [
-        os.path.join(shared_drive_path, 'FemHeads_Auto_Contour', 'Input_3'),
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'FemHeads_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'FemHeads_Auto_Contour', 'Input_3'),
         os.path.join(raystation_research_path, 'FemHeads_Auto_Contour', 'Input_3')
