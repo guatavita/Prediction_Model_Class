@@ -81,6 +81,7 @@ def return_paths():
         raystation_research_path = '\\\\mymdafiles\\ou-radonc\\Raystation\\Research\\Auto_Contour_Sites\\'
     except:
         desktop_path = find_base_dir()
+        print(desktop_path)
         # morfeus_path = os.path.join(desktop_path, 'Morfeus')
         # shared_drive_path = os.path.abspath(os.path.join(desktop_path, 'Shared_Drive', 'Auto_Contour_Sites'))
         # raystation_clinical_path = os.path.abspath(
