@@ -18,7 +18,8 @@ from Bilinear_Dsc import BilinearUpsampling
 
 from Image_Processors_Utils.Image_Processor_Utils import ProcessPrediction, Postprocess_Pancreas, Normalize_Images, \
     Threshold_Images, DilateBinary, Focus_on_CT, CombinePredictions, CreateUpperVagina, CreateExternal, \
-    Per_Image_MinMax_Normalization, ZNorm_By_Annotation, Box_Images, Duplicate_Prediction, Clip_Images_By_Extension
+    Per_Image_MinMax_Normalization, ZNorm_By_Annotation, Box_Images, Duplicate_Prediction, Clip_Images_By_Extension, \
+    Keep_Connected_to_Mask
 
 import SimpleITK as sitk
 
@@ -350,6 +351,7 @@ def return_lung_gtv_model(add_version=True):
         #                   thread_count=1, dist={"1": None}, max_comp={"1": 2}, min_vol={"1": 5000}),
         Threshold_and_Expand(seed_threshold_value=0.55, lower_threshold_value=.3, prediction_key='prediction'),
         Fill_Binary_Holes(prediction_key='prediction', dicom_handle_key='primary_handle'),
+        Keep_Connected_to_Mask(prediction_key='prediction', mask_key='og_annotation'),
     ])
 
     if add_version:
