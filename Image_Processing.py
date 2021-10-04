@@ -348,8 +348,7 @@ def return_lung_gtv_model(add_version=True):
         #                   connectivity={"1": False},
         #                   extract_main_comp={"1": False},
         #                   thread_count=1, dist={"1": None}, max_comp={"1": 2}, min_vol={"1": 5000}),
-        Threshold_and_Expand(seed_threshold_value=[0.55], lower_threshold_value=[.3],
-                             prediction_key='prediction'),
+        Threshold_and_Expand(seed_threshold_value=0.55, lower_threshold_value=.3, prediction_key='prediction'),
         Fill_Binary_Holes(prediction_key='prediction', dicom_handle_key='primary_handle'),
     ])
 
