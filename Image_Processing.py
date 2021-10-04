@@ -298,6 +298,73 @@ def return_lung_model():
     return lung_model
 
 
+def return_lung_gtv_model(add_version=True):
+    morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
+    required_size = (32, 64, 64)
+    lung_gtv_model = PredictWindowSliding(image_key='image', model_path=os.path.join(model_load_path,
+                                                                                        'Lung_GTV',
+                                                                                        'BasicUNet3D_Trial_2.hdf5'),
+                                             model_template=BasicUnet3D(input_tensor=None,
+                                                                        input_shape=required_size + (1,),
+                                                                        classes=2, classifier_activation="softmax",
+                                                                        activation="leakyrelu",
+                                                                        normalization="batch", nb_blocks=3,
+                                                                        nb_layers=5, dropout='standard',
+                                                                        filters=32, dropout_rate=0.1,
+                                                                        skip_type='concat',
+                                                                        bottleneck='standard').get_net(),
+                                             nb_label=2, required_size=required_size, sw_overlap=0.5, sw_batch_size=8,
+                                             )
+    paths = [
+        os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Lung_GTV_Auto_Contour', 'Input_3'),
+        os.path.join(raystation_clinical_path, 'Lung_GTV_Auto_Contour', 'Input_3'),
+        os.path.join(raystation_research_path, 'Lung_GTV_Auto_Contour', 'Input_3')
+    ]
+    lung_gtv_model.set_paths(paths)
+    lung_gtv_model.set_image_processors([
+        DeepCopyKey(from_keys=('annotation',), to_keys=('og_annotation',)),
+        Threshold_Images(image_keys=('image',), lower_bounds=(-1000,), upper_bounds=(1500,), divides=(False,)),
+        Per_Image_MinMax_Normalization(image_keys=('image',), threshold_value=1.0),
+        AddSpacing(spacing_handle_key='primary_handle'),
+        Resampler(resample_keys=('image', 'annotation'),
+                  resample_interpolators=('Linear', 'Nearest'),
+                  desired_output_spacing=[None, None, 2.5],
+                  post_process_resample_keys=('prediction',),
+                  post_process_original_spacing_keys=('primary_handle',),
+                  post_process_interpolators=('Linear',)),
+        Box_Images(bounding_box_expansion=(0, 0, 0), image_keys=('image',),
+                   annotation_key='annotation', wanted_vals_for_bbox=(1,),
+                   power_val_z=required_size[0], power_val_r=required_size[1], power_val_c=required_size[2],
+                   post_process_keys=('prediction',)),
+        ExpandDimensions(image_keys=('image',), axis=-1),
+        ExpandDimensions(image_keys=('image',), axis=0),
+        SqueezeDimensions(post_prediction_keys=('prediction',))
+    ])
+
+    lung_gtv_model.set_prediction_processors([
+        ExpandDimensions(image_keys=('og_annotation',), axis=-1),
+        # ProcessPrediction(prediction_keys=('prediction',),
+        #                   threshold={"1": 0.5},
+        #                   connectivity={"1": False},
+        #                   extract_main_comp={"1": False},
+        #                   thread_count=1, dist={"1": None}, max_comp={"1": 2}, min_vol={"1": 5000}),
+        Threshold_and_Expand(seed_threshold_value=[0.55], lower_threshold_value=[.3],
+                             prediction_key='prediction'),
+        Fill_Binary_Holes(prediction_key='prediction', dicom_handle_key='primary_handle'),
+    ])
+
+    if add_version:
+        roi_names = [roi + '_MorfeusLab_v0' for roi in ["GTV"]]
+    else:
+        roi_names = ["GTV"]
+
+    lung_gtv_model.set_dicom_reader(EnsureLiverPresent(wanted_roi='Lungs',
+                                                          roi_names=roi_names,
+                                                          associations={'Lungs': 'Lungs'}))
+
+    return lung_gtv_model
+
+
 def return_liver_lobe_model():
     morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     liver_lobe_model = PredictLobes(image_key='image', loss=partial(weighted_categorical_crossentropy),

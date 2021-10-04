@@ -7,7 +7,9 @@ from Utils import cleanout_folder, down_folder
 from Image_Processing import return_liver_model, return_lung_model, return_liver_lobe_model, \
     return_liver_disease_model, plot_scroll_Image, return_lacc_model, return_pancreas_model, return_ctvn_model, \
     return_duodenum_model, return_cyst_model, return_lacc_pb3D_model, return_liver_ablation_3d_model, \
-    return_psma_pb3D_model, return_femheads_model, return_psma_model, return_liver_pb3D_model, return_liver_pb3Df_model
+    return_psma_pb3D_model, return_femheads_model, return_psma_model, return_liver_pb3D_model, return_liver_pb3Df_model, \
+    return_lung_gtv_model
+
 from Image_Processors_Module.src.Processors.MakeTFRecordProcessors import *
 import tensorflow as tf
 
@@ -74,6 +76,7 @@ def run_model():
             'liver_3d': return_liver_pb3D_model(),
             'liver_3df': return_liver_pb3Df_model(),
             'lungs': return_lung_model(),
+            'lung_gtv': return_lung_gtv_model(),
             'liver_lobes': return_liver_lobe_model(),
             'liver_disease': return_liver_disease_model(),
             'liver_ablation_3d': return_liver_ablation_3d_model(),
@@ -88,7 +91,8 @@ def run_model():
             'femheads': return_femheads_model(),
         }
 
-        model_keys = ['liver_lobes', 'liver', 'liver_3d', 'liver_3df', 'lungs', 'liver_disease', 'lacc', 'lacc_3d', 'pancreas',
+        model_keys = ['liver_lobes', 'liver', 'liver_3d', 'liver_3df', 'lungs', 'lung_gtv', 'liver_disease', 'lacc',
+                      'lacc_3d', 'pancreas',
                       'ctvn', 'duodenum', 'cyst', 'liver_ablation_3d', 'psma_3d', 'psma_2d', 'femheads']
 
         for key in model_keys:
@@ -211,6 +215,7 @@ def run_model_single(input_path, output_path, model_key):
             'liver_3d': return_liver_pb3D_model(),
             'liver_3df': return_liver_pb3Df_model(),
             'lungs': return_lung_model(),
+            'lung_gtv': return_lung_gtv_model(),
             'liver_lobes': return_liver_lobe_model(),
             'liver_disease': return_liver_disease_model(),
             'lacc': return_lacc_model(),
@@ -225,7 +230,8 @@ def run_model_single(input_path, output_path, model_key):
             'femheads': return_femheads_model(),
         }
 
-        model_list = ['liver', 'liver_3d', 'liver_3df', 'lungs', 'liver_lobes', 'liver_disease', 'lacc', 'lacc_3d', 'pancreas', 'ctvn',
+        model_list = ['liver', 'liver_3d', 'liver_3df', 'lungs', 'lung_gtv', 'liver_lobes', 'liver_disease', 'lacc',
+                      'lacc_3d', 'pancreas', 'ctvn',
                       'duodenum', 'cyst', 'liver_ablation_3d', 'psma_3d', 'psma_2d', 'femheads']
         if not model_key in model_list:
             raise ValueError('model_key should be one of {}'.format(model_list))
