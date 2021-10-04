@@ -336,7 +336,7 @@ def return_lung_gtv_model(add_version=True):
         Box_Images(bounding_box_expansion=(0,0,0), image_keys=('image',),
                    annotation_key='annotation', wanted_vals_for_bbox=(1,),
                    power_val_z=required_size[0], power_val_r=required_size[1], power_val_c=required_size[2],
-                   post_process_keys=('prediction',)),
+                   post_process_keys=('prediction',), extract_comp=False),
         ExpandDimensions(image_keys=('image',), axis=-1),
         ExpandDimensions(image_keys=('image',), axis=0),
         SqueezeDimensions(post_prediction_keys=('prediction',))
