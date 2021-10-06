@@ -303,19 +303,19 @@ def return_lung_gtv_model(add_version=True):
     morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (32, 64, 64)
     lung_gtv_model = PredictWindowSliding(image_key='image', model_path=os.path.join(model_load_path,
-                                                                                        'Lung_GTV',
-                                                                                        'BasicUNet3D_Trial_2.hdf5'),
-                                             model_template=BasicUnet3D(input_tensor=None,
-                                                                        input_shape=required_size + (1,),
-                                                                        classes=2, classifier_activation="softmax",
-                                                                        activation="leakyrelu",
-                                                                        normalization="batch", nb_blocks=3,
-                                                                        nb_layers=5, dropout='standard',
-                                                                        filters=32, dropout_rate=0.1,
-                                                                        skip_type='concat',
-                                                                        bottleneck='standard').get_net(),
-                                             nb_label=2, required_size=required_size, sw_overlap=0.5, sw_batch_size=8,
-                                             )
+                                                                                     'Lung_GTV',
+                                                                                     'BasicUNet3D_Trial_22_temp.hdf5'),
+                                          model_template=BasicUnet3D(input_tensor=None,
+                                                                     input_shape=required_size + (1,),
+                                                                     classes=2, classifier_activation="softmax",
+                                                                     activation="leakyrelu",
+                                                                     normalization="batch", nb_blocks=3,
+                                                                     nb_layers=5, dropout='standard',
+                                                                     filters=32, dropout_rate=0.1,
+                                                                     skip_type='concat',
+                                                                     bottleneck='standard').get_net(),
+                                          nb_label=2, required_size=required_size, sw_overlap=0.5, sw_batch_size=8,
+                                          )
     paths = [
         os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Lung_GTV_Auto_Contour', 'Input_3'),
         os.path.join(raystation_clinical_path, 'Lung_GTV_Auto_Contour', 'Input_3'),
@@ -329,11 +329,11 @@ def return_lung_gtv_model(add_version=True):
         AddSpacing(spacing_handle_key='primary_handle'),
         Resampler(resample_keys=('image', 'annotation'),
                   resample_interpolators=('Linear', 'Nearest'),
-                  desired_output_spacing=[None, None, 2.5],
+                  desired_output_spacing=[None, None, 3.0],
                   post_process_resample_keys=('prediction',),
                   post_process_original_spacing_keys=('primary_handle',),
                   post_process_interpolators=('Linear',)),
-        Box_Images(bounding_box_expansion=(10,10,10), image_keys=('image',),
+        Box_Images(bounding_box_expansion=(10, 10, 10), image_keys=('image',),
                    annotation_key='annotation', wanted_vals_for_bbox=(1,),
                    power_val_z=required_size[0], power_val_r=required_size[1], power_val_c=required_size[2],
                    post_process_keys=('prediction',), extract_comp=False),
@@ -351,17 +351,18 @@ def return_lung_gtv_model(add_version=True):
         #                   thread_count=1, dist={"1": None}, max_comp={"1": 2}, min_vol={"1": 5000}),
         Threshold_and_Expand(seed_threshold_value=0.55, lower_threshold_value=.3, prediction_key='prediction'),
         Fill_Binary_Holes(prediction_key='prediction', dicom_handle_key='primary_handle'),
-        Keep_Connected_to_Mask(prediction_keys=('prediction',), mask_keys=('og_annotation',), max_comp = 2, min_vol=15000),
+        Keep_Connected_to_Mask(prediction_keys=('prediction',), mask_keys=('og_annotation',), max_comp=2,
+                               min_vol=15000),
     ])
 
     if add_version:
-        roi_names = [roi + '_MorfeusLab_v0' for roi in ["GTV"]]
+        roi_names = [roi + '_MorfeusLab_v1' for roi in ["GTV"]]
     else:
         roi_names = ["GTV"]
 
     lung_gtv_model.set_dicom_reader(EnsureLiverPresent(wanted_roi='Lungs',
-                                                          roi_names=roi_names,
-                                                          associations={'Lungs': 'Lungs'}))
+                                                       roi_names=roi_names,
+                                                       associations={'Lungs': 'Lungs'}))
 
     return lung_gtv_model
 
@@ -978,7 +979,8 @@ def return_psma_pb3D_model(add_version=True):
                           threshold={"1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
                           connectivity={"1": True, "2": True, "3": False, "4": False},
                           extract_main_comp={"1": False, "2": False, "3": True, "4": True},
-                          dist={"3": None, "4": None}, max_comp={"3": 3, "4": 3}, min_vol={"3": 2000, "4": 2000}, thread_count=4),
+                          dist={"3": None, "4": None}, max_comp={"3": 3, "4": 3}, min_vol={"3": 2000, "4": 2000},
+                          thread_count=4),
     ])
 
     if add_version:
@@ -1031,7 +1033,8 @@ def return_psma_model(add_version=True):
                           threshold={"1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
                           connectivity={"1": True, "2": True, "3": False, "4": False},
                           extract_main_comp={"1": False, "2": False, "3": True, "4": True},
-                          dist={"3": None, "4": None}, max_comp={"3": 3, "4": 3}, min_vol={"3": 2000, "4": 2000}, thread_count=4),
+                          dist={"3": None, "4": None}, max_comp={"3": 3, "4": 3}, min_vol={"3": 2000, "4": 2000},
+                          thread_count=4),
     ])
 
     if add_version:

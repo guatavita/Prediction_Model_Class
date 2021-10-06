@@ -20,6 +20,7 @@ Class by https://github.com/brianmanderson to run multiple models with Tensorflo
 | Create_PSMA_3D_MorfeusLab | BRigaud | _MorfeusLab_v4 | (need femoral heads) Bladder, Rectum, Iliac Veins, Iliac Arteries |
 | Create_FemHeads_MorfeusLab | BRigaud | _MorfeusLab_v0 | Femoral Heads |
 | Create_Liver_3D_MorfeusLab | BRigaud | _MorfeusLab_v0 | Liver |
+| Create_Lung_GTV_MorfeusLab_v0  | BRigaud | _MorfeusLab_v0 | GTV (need Lungs contour or bounding box)|
 
 ### Dependencies
 This repository is expecting a folder with model per localization. Models are not distributed in that repository.
