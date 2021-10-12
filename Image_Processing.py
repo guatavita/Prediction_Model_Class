@@ -299,12 +299,12 @@ def return_lung_model():
     return lung_model
 
 
-def return_lung_gtv_model(path_size=64, add_version=True):
+def return_lung_gtv_model(model_file = 'BasicUNet3D_Trial_22_x64.hdf5', path_size=64, add_version=True):
     morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (32, path_size, path_size)
     lung_gtv_model = PredictWindowSliding(image_key='image', model_path=os.path.join(model_load_path,
                                                                                      'Lung_GTV',
-                                                                                     'BasicUNet3D_Trial_22_x{}.hdf5'.format(path_size)),
+                                                                                     model_file),
                                           model_template=BasicUnet3D(input_tensor=None,
                                                                      input_shape=required_size + (1,),
                                                                      classes=2, classifier_activation="softmax",
