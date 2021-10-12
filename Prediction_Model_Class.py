@@ -76,9 +76,9 @@ def run_model():
             'liver_3d': return_liver_pb3D_model(),
             'liver_3df': return_liver_pb3Df_model(),
             'lungs': return_lung_model(),
-            'lung_gtv_x64': return_lung_gtv_model(path_size=64),
-            'lung_gtv_x96': return_lung_gtv_model(path_size=96),
-            'lung_gtv_x128': return_lung_gtv_model(path_size=128),
+            'lung_gtv_x64': return_lung_gtv_model(model_file='BasicUNet3D_Trial_22_x64.hdf5', path_size=64),
+            'lung_gtv_x96': return_lung_gtv_model(model_file='BasicUNet3D_Trial_32_x96.hdf5', path_size=96),
+            'lung_gtv_x128': return_lung_gtv_model(model_file='BasicUNet3D_Trial_30_x128.hdf5', path_size=128),
             'liver_lobes': return_liver_lobe_model(),
             'liver_disease': return_liver_disease_model(),
             'liver_ablation_3d': return_liver_ablation_3d_model(),
@@ -93,11 +93,11 @@ def run_model():
             'femheads': return_femheads_model(),
         }
 
-        model_list = ['liver', 'liver_3d', 'liver_3df', 'lungs', 'lung_gtv_x64', 'lung_gtv_x96', 'lung_gtv_x128',
+        model_keys = ['liver', 'liver_3d', 'liver_3df', 'lungs', 'lung_gtv_x64', 'lung_gtv_x96', 'lung_gtv_x128',
                       'liver_lobes', 'liver_disease', 'lacc', 'lacc_3d', 'pancreas', 'ctvn', 'duodenum', 'cyst',
                       'liver_ablation_3d', 'psma_3d', 'psma_2d', 'femheads']
 
-        for key in model_list:
+        for key in model_keys:
             model_info = models_info[key]
             model_info.build_model(model_name=key)
 
