@@ -299,12 +299,12 @@ def return_lung_model():
     return lung_model
 
 
-def return_lung_gtv_model(add_version=True):
+def return_lung_gtv_model(path_size=64, add_version=True):
     morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
-    required_size = (32, 64, 64)
+    required_size = (32, path_size, path_size)
     lung_gtv_model = PredictWindowSliding(image_key='image', model_path=os.path.join(model_load_path,
                                                                                      'Lung_GTV',
-                                                                                     'BasicUNet3D_Trial_22_temp.hdf5'),
+                                                                                     'BasicUNet3D_Trial_22_x{}.hdf5'.format(path_size)),
                                           model_template=BasicUnet3D(input_tensor=None,
                                                                      input_shape=required_size + (1,),
                                                                      classes=2, classifier_activation="softmax",
@@ -317,9 +317,9 @@ def return_lung_gtv_model(add_version=True):
                                           nb_label=2, required_size=required_size, sw_overlap=0.5, sw_batch_size=8,
                                           )
     paths = [
-        os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Lung_GTV_Auto_Contour', 'Input_3'),
-        os.path.join(raystation_clinical_path, 'Lung_GTV_Auto_Contour', 'Input_3'),
-        os.path.join(raystation_research_path, 'Lung_GTV_Auto_Contour', 'Input_3')
+        os.path.join(morfeus_path, 'Auto_Contour_Sites', 'Lung_GTV_x{}_Auto_Contour'.format(path_size), 'Input_3'),
+        os.path.join(raystation_clinical_path, 'Lung_GTV_x{}_Auto_Contour'.format(path_size), 'Input_3'),
+        os.path.join(raystation_research_path, 'Lung_GTV_x{}_Auto_Contour'.format(path_size), 'Input_3')
     ]
     lung_gtv_model.set_paths(paths)
     lung_gtv_model.set_image_processors([
@@ -356,7 +356,7 @@ def return_lung_gtv_model(add_version=True):
     ])
 
     if add_version:
-        roi_names = [roi + '_MorfeusLab_v1' for roi in ["GTV"]]
+        roi_names = [roi + '_x{}_MorfeusLab_v1'.format(path_size) for roi in ["GTV"]]
     else:
         roi_names = ["GTV"]
 
