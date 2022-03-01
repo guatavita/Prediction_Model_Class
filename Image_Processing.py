@@ -1,9 +1,8 @@
 import shutil, os, sys
-import time
-
-import numpy as np
 
 sys.path.insert(0, os.path.abspath('.'))
+sys.path.append(os.path.dirname(__file__))
+
 from functools import partial
 # from Image_Processors_Module.Plot_And_Scroll_Images.Plot_Scroll_Images import plot_scroll_Image
 from Image_Processors_Module.src.Processors.MakeTFRecordProcessors import AddByValues, DivideByValues, ExpandDimensions, \
@@ -13,7 +12,6 @@ from Image_Processors_Module.src.Processors.MakeTFRecordProcessors import AddByV
     Fill_Binary_Holes, MinimumVolumeandAreaPrediction, NormalizeParotidMR
 
 from Dicom_RT_and_Images_to_Mask.src.DicomRTTool import DicomReaderWriter
-import tensorflow as tf
 from Bilinear_Dsc import BilinearUpsampling
 
 from Image_Processors_Utils.Image_Processor_Utils import ProcessPrediction, Postprocess_Pancreas, Normalize_Images, \
@@ -299,7 +297,7 @@ def return_lung_model():
     return lung_model
 
 
-def return_lung_gtv_model(model_file = 'BasicUNet3D_Trial_22_x64.hdf5', path_size=64, add_version=True):
+def return_lung_gtv_model(model_file='BasicUNet3D_Trial_22_x64.hdf5', path_size=64, add_version=True):
     morfeus_path, model_load_path, raystation_clinical_path, raystation_research_path = return_paths()
     required_size = (32, path_size, path_size)
     lung_gtv_model = PredictWindowSliding(image_key='image', model_path=os.path.join(model_load_path,

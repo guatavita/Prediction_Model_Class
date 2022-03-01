@@ -5,12 +5,11 @@ from queue import *
 import time
 from Utils import cleanout_folder, down_folder
 from Image_Processing import return_liver_model, return_lung_model, return_liver_lobe_model, \
-    return_liver_disease_model, plot_scroll_Image, return_lacc_model, return_pancreas_model, return_ctvn_model, \
+    return_liver_disease_model, return_lacc_model, return_pancreas_model, return_ctvn_model, \
     return_duodenum_model, return_cyst_model, return_lacc_pb3D_model, return_liver_ablation_3d_model, \
     return_psma_pb3D_model, return_femheads_model, return_psma_model, return_liver_pb3D_model, return_liver_pb3Df_model, \
     return_lung_gtv_model
 
-from Image_Processors_Module.src.Processors.MakeTFRecordProcessors import *
 import tensorflow as tf
 
 
