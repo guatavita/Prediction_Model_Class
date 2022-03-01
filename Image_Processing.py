@@ -5,18 +5,18 @@ import numpy as np
 
 sys.path.insert(0, os.path.abspath('.'))
 from functools import partial
-from Image_Processors_Module.Plot_And_Scroll_Images.Plot_Scroll_Images import plot_scroll_Image
-from Image_Processors_Module.src.Processors.MakeTFRecordProcessors import AddByValues, DivideByValues, ExpandDimensions, \
+# from Image_Processors_Module.Plot_And_Scroll_Images.Plot_Scroll_Images import plot_scroll_Image
+from .Image_Processors_Module.src.Processors.MakeTFRecordProcessors import AddByValues, DivideByValues, ExpandDimensions, \
     RepeatChannel, Ensure_Image_Proportions, VGGNormalize, Threshold_Prediction, ArgMax, To_Categorical, \
     CombineLungLobes, Normalize_to_annotation, CastData, AddSpacing, DeepCopyKey, Resampler, MaskOneBasedOnOther, \
     CreateTupleFromKeys, SqueezeDimensions, Threshold_and_Expand_New, CombineKeys, Threshold_and_Expand, \
     Fill_Binary_Holes, MinimumVolumeandAreaPrediction, NormalizeParotidMR
 
-from Dicom_RT_and_Images_to_Mask.src.DicomRTTool import DicomReaderWriter
+from .Dicom_RT_and_Images_to_Mask.src.DicomRTTool import DicomReaderWriter
 import tensorflow as tf
-from Bilinear_Dsc import BilinearUpsampling
+from .Bilinear_Dsc import BilinearUpsampling
 
-from Image_Processors_Utils.Image_Processor_Utils import ProcessPrediction, Postprocess_Pancreas, Normalize_Images, \
+from .Image_Processors_Utils.Image_Processor_Utils import ProcessPrediction, Postprocess_Pancreas, Normalize_Images, \
     Threshold_Images, DilateBinary, Focus_on_CT, CombinePredictions, CreateUpperVagina, CreateExternal, \
     Per_Image_MinMax_Normalization, ZNorm_By_Annotation, Box_Images, Duplicate_Prediction, Clip_Images_By_Extension, \
     Keep_Connected_to_Mask
@@ -24,8 +24,8 @@ from Image_Processors_Utils.Image_Processor_Utils import ProcessPrediction, Post
 import SimpleITK as sitk
 
 # this submodule is private (ask @guatavita Github)
-from networks.DeepLabV3plus import *
-from networks.UNet3D import *
+from .networks.DeepLabV3plus import *
+from .networks.UNet3D import *
 
 
 def weighted_categorical_crossentropy(weights):
