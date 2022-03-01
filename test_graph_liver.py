@@ -11,6 +11,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu)
 os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = 'true'
 os.environ['HDF5_USE_FILE_LOCKING'] = 'FALSE'
 
+from Prediction_Model_Class import *
 
 def run_model_single_graph(input_path, output_path, model_key):
 

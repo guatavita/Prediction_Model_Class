@@ -10,6 +10,7 @@ from Image_Processing import return_liver_model, return_lung_model, return_liver
     return_psma_pb3D_model, return_femheads_model, return_psma_model, return_liver_pb3D_model, return_liver_pb3Df_model, \
     return_lung_gtv_model
 
+from Image_Processors_Module.src.Processors.MakeTFRecordProcessors import *
 import tensorflow as tf
 
 
