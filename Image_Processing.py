@@ -17,10 +17,11 @@ from Dicom_RT_and_Images_to_Mask.src.DicomRTTool import DicomReaderWriter
 import tensorflow as tf
 from Bilinear_Dsc import BilinearUpsampling
 
-from Image_Processors_Utils.Image_Processor_Utils import ProcessPrediction, Postprocess_Pancreas, Normalize_Images, \
-    Threshold_Images, DilateBinary, Focus_on_CT, CombinePredictions, CreateUpperVagina, CreateExternal, \
-    Per_Image_MinMax_Normalization, ZNorm_By_Annotation, Box_Images, Duplicate_Prediction, Clip_Images_By_Extension, \
-    Keep_Connected_to_Mask
+from Image_Processors_Utils.Image_Processor_Utils import ProcessPrediction, Postprocess_Pancreas, DilateBinary, \
+    Focus_on_CT, CombinePredictions, CreateUpperVagina, CreateExternal, ZNorm_By_Annotation, Box_Images, \
+    Duplicate_Prediction, Clip_Images_By_Extension, Keep_Connected_to_Mask
+
+from Image_Processors_Utils.TF_Processor_Utils import Normalize_Images, Threshold_Images, Per_Image_MinMax_Normalization
 
 import SimpleITK as sitk
 
