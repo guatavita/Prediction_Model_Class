@@ -19,7 +19,7 @@ from Bilinear_Dsc import BilinearUpsampling
 
 from Image_Processors_Utils.Image_Processor_Utils import ProcessPrediction, Postprocess_Pancreas, DilateBinary, \
     Focus_on_CT, CombinePredictions, CreateUpperVagina, CreateExternal, ZNorm_By_Annotation, Box_Images, \
-    Duplicate_Prediction, Clip_Images_By_Extension, Keep_Connected_to_Mask
+    Duplicate_Prediction, Clip_Images_By_Extension, Keep_Connected_to_Mask, sITK_Handle_to_Numpy
 
 from Image_Processors_Utils.TF_Processor_Utils import Normalize_Images, Threshold_Images, Per_Image_MinMax_Normalization
 
